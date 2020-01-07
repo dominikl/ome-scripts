@@ -200,14 +200,11 @@ def run_script(conn, script_params):
     z = script_params["Z_Plane"]
     t = script_params["Timepoint"]
 
-    if script_params["Custom_Mask_Color"]:
-        r = int(script_params["Mask_color_Red"])
-        g = int(script_params["Mask_color_Green"])
-        b = int(script_params["Mask_color_Blue"])
-        a = int(script_params["Mask_color_Alpha"])
-        rgba = (r,g,b,a)
-    else:
-        rgba = (255,255,0,100)
+    r = int(script_params["Mask_color_Red"])
+    g = int(script_params["Mask_color_Green"])
+    b = int(script_params["Mask_color_Blue"])
+    a = int(script_params["Mask_color_Alpha"])
+    rgba = (r,g,b,a)
 
     save_images = script_params["Save_Images"]
 
@@ -242,53 +239,49 @@ a simple iterative approach is used to automatically find a good value.
         """,
 
         scripts.String(
-            "Data_Type", optional=False, grouping="1",
+            "Data_Type", optional=False, grouping = "a",
             description="Choose source of images",
             values=dataTypes, default="Dataset"),
-
         scripts.List(
-            "IDs", optional=False, grouping="1",
+            "IDs", optional=False, grouping = "a.2",
             description="List of IDs to process.").ofType(rlong(0)),
 
         scripts.Int(
-            "Channel", optional=False, grouping="2.1",
+            "Channel", optional=False, grouping = "b",
             description="Which channel to use for indexing (first channel = 0)",
             min=0, default=0),
         scripts.Int(
-            "Z_Plane", optional=False, grouping="2.1",
+            "Z_Plane", optional=False, grouping = "b.2",
             description="Which Z plane to use for indexing (first channel = 0)",
             min=0, default=0),
         scripts.Int(
-            "Timepoint", optional=False, grouping="2.1",
+            "Timepoint", optional=False, grouping = "b.3",
             description="Which timepoint to use for indexing (first channel = 0)",
             min=0, default=0),
-
-        scripts.Float("Threshold", grouping="3",
+        scripts.Float("Threshold", optional=False, grouping = "b.4",
                     description="Threshold value to separate foreground from background "
                                 "(enter negative value in order to use auto thresholding)",
                     default=-1.0),
 
-        scripts.Bool("Custom_Mask_Color", grouping="4", default=True),
-        scripts.Int("Mask_color_Red", grouping="4.1",
+        scripts.Bool("Save_Images", grouping = "d",
+                     description="Save the thresholded images as new images",
+                     default=False),
+
+        scripts.Bool("Delete_previous_Masks", grouping = "e",
+                     description="Delete all previous Masks of the images",
+                     default=True),
+        scripts.Int("Mask_color_Red", optional=False, grouping = "e.2",
                     description="Display color of the mask",
                     min=0, max=255, default=255),
-        scripts.Int("Mask_color_Green", grouping="4.2",
+        scripts.Int("Mask_color_Green", optional=False, grouping = "e.3",
                     description="Display color of the mask",
                     min=0, max=255, default=255),
-        scripts.Int("Mask_color_Blue", grouping="4.3",
+        scripts.Int("Mask_color_Blue", optional=False, grouping = "e.4",
                     description="Display color of the mask",
                     min=0, max=255, default=0),
-        scripts.Int("Mask_color_Alpha", grouping="4.4",
+        scripts.Int("Mask_color_Alpha", optional=False, grouping = "e.5",
                     description="Display color of the mask",
                     min=0, max=255, default=100),
-
-        scripts.Bool("Delete_previous_Masks",
-                     description="Delete all previous Masks of the images",
-                     grouping="4.5", default=True),
-
-        scripts.Bool("Save_Images",
-                     description="Save the thresholded images as new images",
-                     grouping="5", default=False),
 
         version="1.0",
         authors=["Dominik Lindner"],
