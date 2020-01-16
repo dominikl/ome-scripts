@@ -21,6 +21,9 @@ def threshold_plane(pixels, threshold=None):
     """
 
     if threshold is None:
+        # perform simple automatic thresholding, see
+        # https://en.wikipedia.org/wiki/Thresholding_(image_processing)\
+        # #Automatic_thresholding 
         threshold = np.mean(pixels)
         min_value = np.amin(pixels)
         max_value = np.amax(pixels)
